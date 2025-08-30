@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil — Ecoride | Covoiturage dans votre région{% endblock %}
+
+{% block body %}
+	<section class="container homepage-section">>
+		{% include 'homepage/_search-form.html.twig' %}
+		{% include 'homepage/_featurette-section.html.twig' %}
+		{% include 'homepage/_description-section.html.twig' %}
+		
+	</section>
+{% endblock %}
