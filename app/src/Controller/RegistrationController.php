@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use App\Service\JWTService;
 use App\Security\UserAuthenticator; 
+use App\Service\SendEmailService;
 
 class RegistrationController extends AbstractController
 {
@@ -23,7 +24,8 @@ class RegistrationController extends AbstractController
             UserAuthenticatorInterface $userAuthenticator, 
             UserAuthenticator $authenticator, 
             EntityManagerInterface $entityManager, 
-            JWTService $jwt
+            JWTService $jwt,
+            SendEmailService $mail
         ): Response
     {
         $user = new User();
@@ -63,10 +65,19 @@ class RegistrationController extends AbstractController
             //On génère le token
             $token = $jwt->generate($header, $payload, $this->getParameter('app.jwtsecret'));
             
-            dd($token);
+            // pour afficher le token dans le navigateur
+            // dd($token);
 
             //envoyer par email
-            return $userAuthenticator->authenticatorUser(
+            $mail->send(
+                'no-reply@ecoride.fr',
+                $user->getEmail(),
+                'Confirmation d\'inscription',
+                'register',
+                compact('user', 'token') //['user' => $user, 'token' => $token]
+            );
+
+            return $userAuthenticator->authenticateUser(
                 $user,
                 $authenticator,
                 $request
