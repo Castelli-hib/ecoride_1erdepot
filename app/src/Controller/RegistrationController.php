@@ -12,7 +12,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\JWTService;
 use App\Service\SendEmailService;
-use App\Repository\UserRepository;
 
 class RegistrationController extends AbstractController
 {
@@ -41,32 +40,39 @@ class RegistrationController extends AbstractController
 
             // Compte désactivé tant que non vérifié
             $user->setIsVerified(false);
+            $existingUser = $this->entityManager
+                ->getRepository(User::class)
+                ->findOneBy(['email' => $user->getEmail()]);
+
+            if ($existingUser) {
+                $this->addFlash('danger', 'Un compte existe déjà avec cet email.');
+                return $this->redirectToRoute('app_register');
+            }
+
+
             $this->entityManager->persist($user);
             $this->entityManager->flush();
-            // do anything else you need here, like send an email
-            
-            // Générer le token JWT pour confirmation email
+
+            // Générer le token JWT (24h)
             $token = $this->jwt->generate(
-                ['typ'=>'JWT','alg'=>'HS256'],
+                ['typ' => 'JWT', 'alg' => 'HS256'],
                 [
                     'user_id' => $user->getId(),
-                    'email'   => $user->getEmail()
+                    'email'   => $user->getEmail(),
                 ],
                 $this->getParameter('app.jwtsecret'),
-                86400 // validité 24h
+                86400
             );
 
-            // Envoyer le mail de confirmation
+            // Envoyer l’email de confirmation
             $this->mail->send(
                 'no-reply@ecoride.fr',
                 $user->getEmail(),
                 'Confirmation d\'inscription',
                 'emails/register-email.html.twig',
-                compact('user', 'token')//['user' => $user, 'token' => $token]
+                compact('user', 'token')
             );
-            //  $this->addFlash('success', 'Utilisateur inscrit, cliquez sur le lien pour confirmer votre adresse mail !');
 
-            // Rediriger vers la page qui indique à l'utilisateur de vérifier son email
             return $this->redirectToRoute('app_check_email');
         }
 
@@ -84,15 +90,15 @@ class RegistrationController extends AbstractController
     #[Route('/verify/{token}', name: 'verify_user')]
     public function verifyUser(string $token): Response
     {
-        // Vérifie la validité et la signature du token
+        // Vérifie le token
         if (!$this->jwt->isValid($token) || $this->jwt->isExpired($token) || !$this->jwt->check($token, $this->getParameter('app.jwtsecret'))) {
             $this->addFlash('danger', 'Lien de validation invalide ou expiré.');
             return $this->redirectToRoute('app_register');
         }
 
         $payload = $this->jwt->getPayload($token);
-
         $user = $this->entityManager->getRepository(User::class)->find($payload['user_id']);
+
         if (!$user) {
             $this->addFlash('danger', 'Utilisateur introuvable.');
             return $this->redirectToRoute('app_register');
@@ -103,36 +109,11 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        // Activation du compte
         $user->setIsVerified(true);
         $this->entityManager->flush();
 
         $this->addFlash('success', 'Votre compte a été activé !');
         return $this->redirectToRoute('app_login');
-    }
-
-    
-    #[Route('/verif/{token}', name: 'verif_user')]
-    public function verifUser($token, JWTService $jwt, UserRepository $userRepository, EntityManagerInterface $em): Response
-    {
-        // 1. Vérifier si le token est valide (cohérent, pas expiré et correct)
-        if (!$jwt->isValid($token) && $jwt->isExpired($token) && !$jwt->check($token, $this->getParameter('app.jwtsecret'))) {
-            //Le token est valide
-            //On recupere les données
-            $payload = $jwt->getPayload($token);
-            
-            //On recupere l'utilisateur
-            $user = $userRepository->find($payload['user_id']);
-
-            // on vérifie qu’on a bien un user et qu’il n’est pas déjà activé
-            if($user && !$user->isVerified());
-                $user->setIsVerified(true);
-                $em->flush();
-
-                $this->addFlash('success', 'Votre compte a bien été activé !');
-                return $this->redirectToRoute('app_homepage');
-        }
-        
-                $this->addFlash('Attention', 'Le token est invalide ou a déjà expiré');
-                return $this->redirectToRoute('app_login');
     }
 }

@@ -43,6 +43,11 @@ class Route
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'routes')]
     private Collection $userRoute;
 
+    #[ORM\ManyToOne(inversedBy: 'routes')]
+    #[ORM\JoinColumn(nullable: false)]  // <-- à ajouter / corriger
+    private ?User $user = null;
+
+
     public function __construct()
     {
         $this->userRoute = new ArrayCollection();
@@ -157,6 +162,18 @@ class Route
     public function removeUserRoute(User $userRoute): static
     {
         $this->userRoute->removeElement($userRoute);
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

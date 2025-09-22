@@ -3,12 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\AvisRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[ORM\Entity(repositoryClass: AvisRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Avis
 {
     #[ORM\Id]
@@ -22,16 +22,33 @@ class Avis
     #[ORM\Column]
     private ?int $notation = null;
 
-    /**
-     * @var Collection<int, User>
-     */
-    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'avis')]
-    private Collection $userAvis;
+    #[ORM\Column(length: 255, unique: true)]
+    private ?string $slug = null;
 
-    public function __construct()
+    #[ORM\ManyToOne(inversedBy: 'avis')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?User $user = null;
+
+
+    // -----------------------
+    // Lifecycle Callbacks
+    // -----------------------
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function generateSlug(): void
     {
-        $this->userAvis = new ArrayCollection();
+        if ($this->comment) {
+            $slugger = new AsciiSlugger();
+            $baseSlug = strtolower($slugger->slug($this->comment));
+
+            // Ajouter un identifiant unique pour éviter les doublons
+            $this->slug = $baseSlug . '-' . uniqid();
+        }
     }
+
+    // -----------------------
+    // Getters & Setters
+    // -----------------------
 
     public function getId(): ?int
     {
@@ -46,7 +63,6 @@ class Avis
     public function setComment(string $comment): static
     {
         $this->comment = $comment;
-
         return $this;
     }
 
@@ -58,37 +74,28 @@ class Avis
     public function setNotation(int $notation): static
     {
         $this->notation = $notation;
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUserAvis(): Collection
+    public function getSlug(): ?string
     {
-        return $this->userAvis;
+        return $this->slug;
     }
 
-    public function addUserAvi(User $userAvi): static
+    public function setSlug(string $slug): static
     {
-        if (!$this->userAvis->contains($userAvi)) {
-            $this->userAvis->add($userAvi);
-            $userAvi->setAvis($this);
-        }
-
+        $this->slug = $slug;
         return $this;
     }
 
-    public function removeUserAvi(User $userAvi): static
+    public function getUser(): ?User
     {
-        if ($this->userAvis->removeElement($userAvi)) {
-            // set the owning side to null (unless already changed)
-            if ($userAvi->getAvis() === $this) {
-                $userAvi->setAvis(null);
-            }
-        }
+        return $this->user;
+    }
 
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
         return $this;
     }
 }
