@@ -5,50 +5,27 @@
 {% block body %}
     <h1>M'inscrire</h1>
 
-    {{ form_errors(registrationForm) }}
-
     {{ form_start(registrationForm) }}
-        <div>
-            {{ form_row(registrationForm.email) }}
-        </div>
 
-        <div>    
-            {{ form_row(registrationForm.username) }}
-        </div>
+        {{ form_row(registrationForm.firstname) }}
+        {{ form_row(registrationForm.lastname) }}
+        {{ form_row(registrationForm.username) }}
+        {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.phoneNumber) }}
 
-        <div>
-            {{ form_row(registrationForm.firstname) }}
-        </div>
+        <h4>Adresse :</h4>
+        {{ form_row(registrationForm.street) }}
+        {{ form_row(registrationForm.addressComplement) }}
+        {{ form_row(registrationForm.postalCode) }}
+        {{ form_row(registrationForm.city) }}
 
-        <div>
-            {{ form_row(registrationForm.lastname) }}
-        </div>
+        <h4>Choisissez votre rôle :</h4>
+        {{ form_row(registrationForm.roles) }}
 
-        <div>
-            {{ form_row(registrationForm.phone_number) }}
-        </div>
+        {{ form_row(registrationForm.plainPassword) }}
 
-        <div>
-            {{ form_row(registrationForm.adress) }}
-        </div>
+        <button class="btn btn-primary">S'inscrire</button>
 
-        <div>
-            {{ form_row(registrationForm.role) }}
-        </div>
-
-        {# <div>
-            {{ form_row(registrationForm.credit) }}
-        </div> #}
-
-        <div>
-            {{ form_row(registrationForm.plainPassword, { label: 'Mot de passe' }) }}
-        </div>
-
-        <div>
-            {{ form_row(registrationForm.agreeTerms) }}
-        </div>
-
-        <button type="submit" class="btn">M'inscrire</button>
     {{ form_end(registrationForm) }}
 
     <p>Déjà inscrit ? <a href="{{ path('app_login') }}">Se connecter</a></p>
