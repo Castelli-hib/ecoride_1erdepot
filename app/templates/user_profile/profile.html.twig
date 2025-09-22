@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon profil{% endblock %}
+
+{% block body %}
+<h1>Modifier mon profil</h1>
+
+{{ form_start(profilForm) }}
+    {{ form_row(profilForm.firstname) }}
+    {{ form_row(profilForm.lastname) }}
+    {{ form_row(profilForm.username) }}
+    {{ form_row(profilForm.email) }}
+    {{ form_row(profilForm.phoneNumber) }}
+    {{ form_row(profilForm.street) }}
+    {{ form_row(profilForm.addressComplement) }}
+    {{ form_row(profilForm.postalCode) }}
+    {{ form_row(profilForm.city) }}
+
+    <button class="btn btn-primary">Mettre à jour</button>
+{{ form_end(profilForm) }}
+{% endblock %}
