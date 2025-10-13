@@ -20,8 +20,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Validator\Constraints\PasswordStrength;
+
 
 class RegistrationFormType extends AbstractType
 {
@@ -30,7 +34,11 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('firstname')
             ->add('lastname')
-            ->add('username')
+            ->add('username', TextType::class, [
+                'attr' => [
+                    'placeholder' => 'minimum 3 caractères',
+                ]
+            ])
             ->add('email')
             ->add('phoneNumber')
 
@@ -54,11 +62,15 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
-                    new NotBlank(['message' => 'Le mot de passe est obligatoire.']),
+                    new Assert\NotBlank(['message' => 'Le mot de passe est obligatoire.']),
                     new Length([
-                        'min' => 12,
+                        'min' => 16,
                         'minMessage' => 'Le mot de passe doit contenir au moins {{ limit }} caractères.',
                         'max' => 4096,
+                    ]),
+                    new PasswordStrength([
+                        'minScore' => PasswordStrength::STRENGTH_STRONG,
+                        'message' => 'Le mot de passe doit être plus fort.',
                     ]),
                 ],
             ])
@@ -70,7 +82,6 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ]);
-            
     }
 
     public function configureOptions(OptionsResolver $resolver): void

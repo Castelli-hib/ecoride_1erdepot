@@ -2,6 +2,10 @@
 
 {% block title %}Me connecter{% endblock %}
 
+{% block importmap %}
+	{{ importmap(['app', 'register']) }}
+{% endblock %} 
+
 {% block body %}
     <form method="post">
         {% if error %}
