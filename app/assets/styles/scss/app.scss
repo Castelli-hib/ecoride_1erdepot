@@ -1,15 +1,44 @@
-// @import 'variables';
-// @import 'text';
-// @import 'containers';
-// @import 'grid';
-// @import 'spacing';
-// @import 'badges';
-// @import 'card';
-// @import 'hero';
-// @import 'pagination';
 
-body{
+// @use 'bootstrap/scss/bootstrap' as *;
+@use 'color' as *;
+@use 'variables' as *;
+// @use 'mixins' as *;
+// @use 'navbar' as *;
+// @use 'header' as *;
+// @use 'footer' as *;
+// @use 'components' as *;
+// @use 'forms' as *;
+// @use 'admin' as *;
+
+
+body {
     background-color: white;
-    margin: 0;
-    font-family: "Roboto", system-ui;
+}   
+    
+.text {
+    &-red{
+        color: red;
+    }
+    &-orange{
+        color: orange;
+    }
+    &-green{
+        color: green;
+    }
+}
+
+.password-strength-bar {
+  width: 100%;
+  height: 8px;
+  background-color: #ddd;
+  border-radius: 4px;
+  margin-top: 5px;
+  overflow: hidden;
+}
+
+.bar {
+  height: 100%;
+  width: 0%;
+  transition: width 0.3s ease, background-color 0.3s ease;
+  border-radius: 4px;
 }
