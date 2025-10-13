@@ -1,4 +1,3 @@
-
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -25,3 +24,29 @@ yarn-error.log
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+
+###> Custom (Ecoride - Docker & SASS) ###
+# Dossiers Docker
+/mysql_data/
+/app/mysql_data/
+/docker-compose.override.yml
+
+# Dossiers générés par Live Sass Compiler
+/assets/styles/css/
+/assets/styles/.sass-cache/
+/assets/styles/**/*.css.map
+
+# Fichiers temporaires & logs
+*.log
+*.cache
+*.tmp
+
+# Système et IDE
+/.idea/
+/.vscode/
+/*.iml
+.DS_Store
+Thumbs.db
+
+# Sécurité : ne jamais versionner les clés SSL
+/etc/ssl/
