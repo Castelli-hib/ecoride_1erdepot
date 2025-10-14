@@ -65,3 +65,14 @@
 - `docker exec -it php php bin/console cache:warmup`
 
  echo "Cache vidé et reconstruit avec succès !"
+
+## Bash
+
+- docker exec -it php bash
+- root@c0dabaa4095d:/var/www# php bin/console make:migration
+
+## Avant de planter l'ordinateur
+
+Faire docker down (sinon conflit des ports)
+docker-compose down
+docker-compose up -d // position /ecoride
