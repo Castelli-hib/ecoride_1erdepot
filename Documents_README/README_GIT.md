@@ -1,10 +1,41 @@
-# Workflow Git pour Ecoride / Symfony
+# Workflow Git pour Ecoride / Symfony Global Information Tracker
+
+Git est un framework, c'est une application, il est effectif si on travaille à plusieurs
+
+Fonctionnement
+Par Branche
+On tire ddes solutions temporaires sur des branches
+
+GitHub est une entreprise + ajout d'autres briques et de finition
+git Actions = application qui recupere le code est fait du pipeline
+ci/Cd = des événement et des actions sur notre code
+Continuos Intégration (integration du code en continue) execute
+
+1-Créer le repository + new = a nommer suivant le nom du projet
+REenseigne les éléments de communication
+Pour communiquer avec Git
+le code doit être chiffrer
+https = secure facon de communiquer entre les deux avec le s c'est sécure pas sillple
+ssh = c'est le sécure shell, permet de créer un canal toujours securisé. Qui va générer un private key et un public key (la private key pour chiffrer et la public key pour déchiffrer les données envoyé vont etre chiffrer avec le private key et on mes envoi)
+
+une fois le repository créer on récupere le ssh pour faire la liaison avec notre projer et injecter notre code, c'est le lien du répertoire Gityes
+
+Git init = il va créer un fichier dans mon répertoire et a tracker tout ce qu'il voit, d'ou l'affiche sur bnotre IDE du nombre de modification executée. Fichier indéxé
+
+ls= lister
+ls -la // cd
+.git = c'est le distibuteur hébergé en local
+
+git remote -v = donne l'adresse du repo distant avec qui on veut communiquer, il doit dire vous étes ... le chemin
+Pour ajouter le lien distant
+git add .
 
 ## 1. Branches principales
 
 - **main**  
   Contient le code stable et déployable.  
   On ne touche à `main` que pour des versions testées et validées.
+  git branch -M main : pour changer master en main
 
 - **devop (ou develop)**  
   Branche de développement.  
@@ -45,7 +76,7 @@ git checkout main
 git pull origin main
 git merge devop
 git push origin main
-💡 Conseil : toujours ignorer les fichiers sensibles et volumineux (.env, vendor/, node_modules/, var/, public/build/) pour garder le dépôt propre.
+Conseil : toujours ignorer les fichiers sensibles et volumineux (.env, vendor/, node_modules/, var/, public/build/) pour garder le dépôt propre.
 
 ## Ajouter les fichiers à l’index (staging area)
 
@@ -70,10 +101,33 @@ git add Documents_README/
 
 git commit -m "Ajout du dossier Documents_README avec tous les README"
 
-## Pousser la branche sur le dépôt distant
+## Créer une branche
 
-git push -u origin feature/README_GIT.md
-ajouter d’autres fichiers README plus tard, faire :
-git add Documents_README/README_AUTRE.md
-git commit -m "Ajout du README_AUTRE"
+git checkout -b feature/ma-feature
+
+## Commit
+
+git add .
+git commit -m "Message clair"
+
+## Premier push
+
+git push -u origin feature/ma-feature
+
+## Push suivant
+
 git push
+
+## Mise à jour avec develop
+
+git checkout develop && git pull origin develop
+git checkout feature/ma-feature
+git merge develop
+
+## Astuces
+
+astuce : exécutez « git fetch » pour le récupérer.
+astuce : si vous prévoyez de pousser une nouvelle branche locale qui suivra son équivalent distant, vous pouvez utiliser
+« git push -u » pour définir la configuration en amont lors de la poussée.
+
+astuce : désactivez ce message avec « git config set advice.setUpstreamFailure false »
