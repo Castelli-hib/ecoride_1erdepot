@@ -2,30 +2,19 @@
 
 namespace App\Form;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\User;
-use App\Service\JWTService;
-use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
-use App\Service\SendEmailService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraints\PasswordStrength;
-
 
 class RegistrationFormType extends AbstractType
 {
@@ -37,34 +26,45 @@ class RegistrationFormType extends AbstractType
             ->add('username', TextType::class, [
                 'attr' => [
                     'placeholder' => 'minimum 3 caractères',
+                ],
+                'constraints' => [
+                    new Assert\Length([
+                        'min' => 3,
+                        'minMessage' => 'Le nom d’utilisateur doit faire au moins {{ limit }} caractères.'
+                    ])
                 ]
             ])
             ->add('email')
             ->add('phoneNumber')
 
-            // Adresse : 4 champs distincts
+            // Adresse
             ->add('street')
             ->add('addressComplement')
             ->add('postalCode')
             ->add('city')
 
+            // Rôle (checkbox multiples)
             ->add('roles', ChoiceType::class, [
                 'choices'  => [
                     'Conducteur' => 'ROLE_CONDUCTEUR',
                     'Passager'   => 'ROLE_PASSAGER',
                 ],
-                'expanded' => true,  // affichage en checkbox
-                'multiple' => true,  // plusieurs choix possibles
+                'expanded' => true,
+                'multiple' => true,
                 'label'    => 'Votre rôle'
             ])
 
+            // Mot de passe + contraintes
             ->add('plainPassword', PasswordType::class, [
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
+                'attr' => [
+                    'autocomplete' => 'new-password',
+                    'id' => 'registration_form_plainPassword'
+                ],
                 'constraints' => [
-                    new Assert\NotBlank(['message' => 'Le mot de passe est obligatoire.']),
+                    new NotBlank(['message' => 'Le mot de passe est obligatoire.']),
                     new Length([
-                        'min' => 16,
+                        'min' => 8,
                         'minMessage' => 'Le mot de passe doit contenir au moins {{ limit }} caractères.',
                         'max' => 4096,
                     ]),
@@ -74,6 +74,8 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
+
+            // Case RGPD
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
