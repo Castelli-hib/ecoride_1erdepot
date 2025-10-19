@@ -1,13 +1,62 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil — Ecoride | Covoiturage dans votre région{% endblock %}
+{% block title %}Accueil — Ecoride | Covoiturage dans votre région
+{% endblock %}
 
 {% block body %}
 	<section class="container homepage-section">>
-	
+
 		{% include 'homepage/_search-form.html.twig' %}
 		{% include 'homepage/_featurette-section.html.twig' %}
+
+		<header>
+			<h1 class="homepage-section__title">Bienvenue sur Ecoride</h1>
+			<p class="homepage-section__subtitle">Le site de covoiturage dans votre région</p>
+		</header>
+		<main>
+			<section class="container homepage-section">
+				<h2>Derniers trajets</h2>
+
+				{% if routes is empty %}
+					<p>Aucun trajet disponible pour l'instant.</p>
+				{% else %}
+					{% for route in routes %}
+						<article class="route-card">
+							<h3>{{ route.departureTown }}
+								→
+								{{ route.arrivalTown }}</h3>
+							<p>
+								<strong>Date :</strong>
+								{{ route.departureDay ? route.departureDay|date('d/m/Y') : '—' }}
+								&nbsp;
+								<strong>Heure :</strong>
+								{{ route.departureTime ? route.departureTime|date('H:i') : '—' }}
+							</p>
+							<p>
+								<strong>Durée estimée :</strong>
+								{{ route.travelTime }}
+								min</p>
+
+							{% if route.correspondance %}
+								<p>
+									<strong>Correspondance :</strong>
+									{{ route.correspondanceDetail }}</p>
+							{% endif %}
+
+							{% if route.user %}
+								<p>
+									<small>Proposé par :
+										{{ route.user.username }}</small>
+								</p>
+							{% endif %}
+
+						</article>
+					{% endfor %}
+				{% endif %}
+			</section>
+		</main>
+
 		{% include 'homepage/_description-section.html.twig' %}
-		
+
 	</section>
 {% endblock %}

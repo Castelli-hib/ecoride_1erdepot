@@ -1,4 +1,4 @@
-// --- Variables de contrôle des champs
+// --- Variables de contrôle
 let firstname = false;
 let lastname = false;
 let username = false;
@@ -6,7 +6,6 @@ let email = false;
 let rgpd = false;
 let password = false;
 
-// --- Récupération des éléments du formulaire
 document.addEventListener('DOMContentLoaded', () => {
     const firstnameInput = document.querySelector('#registration_form_firstname');
     const lastnameInput = document.querySelector('#registration_form_lastname');
@@ -16,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const passwordInput = document.querySelector('#registration_form_plainPassword');
 
     if (!firstnameInput || !lastnameInput || !usernameInput || !emailInput || !rgpdCheckbox || !passwordInput) {
-        console.warn(' Certains champs du formulaire sont introuvables.');
+        console.warn('Certains champs du formulaire sont introuvables.');
         return;
     }
 
@@ -33,29 +32,25 @@ function checkFirstname() {
     firstname = this.value.trim().length >= 2;
     checkAll();
 }
-
 function checkLastname() {
     lastname = this.value.trim().length >= 2;
     checkAll();
 }
-
 function checkUsername() {
     username = this.value.trim().length >= 3;
     checkAll();
 }
-
 function checkEmail() {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     email = regex.test(this.value.trim());
     checkAll();
 }
-
 function checkRgpd() {
     rgpd = this.checked;
     checkAll();
 }
 
-// --- Vérifie si tous les champs sont bons
+// --- Vérifie si tout est bon
 function checkAll() {
     const button = document.querySelector("#submit-button");
     if (!button) return;
@@ -67,7 +62,7 @@ function checkAll() {
     }
 }
 
-// --- Dictionnaire de force du mot de passe
+// --- Force du mot de passe
 const PasswordStrength = {
     STRENGTH_VERY_WEAK: 'Très faible',
     STRENGTH_WEAK: 'Faible',
@@ -76,7 +71,6 @@ const PasswordStrength = {
     STRENGTH_VERY_STRONG: 'Très fort'
 };
 
-// --- Vérification du mot de passe
 function checkPassword() {
     const mdp = this.value;
     const entropyElement = document.querySelector('#entropy');
@@ -86,7 +80,6 @@ function checkPassword() {
     const entropy = evaluatePasswordStrength(mdp);
     entropyElement.classList.remove("text-red", "text-orange", "text-green");
 
-    // Valeurs par défaut
     let width = 20;
     let color = "red";
 
@@ -94,20 +87,30 @@ function checkPassword() {
         case PasswordStrength.STRENGTH_VERY_WEAK:
         case PasswordStrength.STRENGTH_WEAK:
             entropyElement.classList.add("text-red");
+            width = 20;
+            color = "red";
             password = false;
             break;
         case PasswordStrength.STRENGTH_MEDIUM:
             entropyElement.classList.add("text-orange");
+            width = 50;
+            color = "orange";
             password = false;
             break;
         case PasswordStrength.STRENGTH_STRONG:
+            entropyElement.classList.add("text-green");
+            width = 80;
+            color = "green";
+            password = true;
+            break;
         case PasswordStrength.STRENGTH_VERY_STRONG:
             entropyElement.classList.add("text-green");
+            width = 100;
+            color = "darkgreen";
             password = true;
             break;
     }
 
-    // Actualise la barre
     bar.style.width = width + "%";
     bar.style.backgroundColor = color;
 
@@ -115,7 +118,6 @@ function checkPassword() {
     checkAll();
 }
 
-// --- Calcul de l'entropie du mot de passe
 function evaluatePasswordStrength(password) {
     const length = password.length;
     if (length === 0) return PasswordStrength.STRENGTH_VERY_WEAK;
