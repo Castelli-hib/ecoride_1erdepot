@@ -1,52 +1,30 @@
-###> symfony/framework-bundle ###
-/.env.local
-/.env.local.php
-/.env.*.local
-/config/secrets/prod/prod.decrypt.private.php
-/public/bundles/
-/var/
+# Symfony / PHP
 /vendor/
-###< symfony/framework-bundle ###
+/var/
+/.env
+/.env.local
+/.env.test
+/.env.dev
+/.phpunit.result.cache
 
-###> symfony/webpack-encore-bundle ###
+# Node / JS
 /node_modules/
 /public/build/
-npm-debug.log
-yarn-error.log
-###< symfony/webpack-encore-bundle ###
+/assets/app.js.map
 
-###> phpunit/phpunit ###
-/phpunit.xml
-/.phpunit.cache/
-###< phpunit/phpunit ###
+# Docker
+docker-compose.override.yml
+.env.docker
+mysql_data/
+app/mysql_data/
+postgres_data/
+redis_data/
 
-###> symfony/asset-mapper ###
-/public/assets/
-/assets/vendor/
-###< symfony/asset-mapper ###
-
-###> Custom (Ecoride - Docker & SASS) ###
-# Dossiers Docker
-/mysql_data/
-/app/mysql_data/
-/docker-compose.override.yml
-
-# Dossiers générés par Live Sass Compiler
-/assets/styles/css/
-/assets/styles/.sass-cache/
-/assets/styles/**/*.css.map
-
-# Fichiers temporaires & logs
-*.log
-*.cache
-*.tmp
-
-# Système et IDE
+# IDE & système
 /.idea/
 /.vscode/
-/*.iml
-.DS_Store
+/.DS_Store
 Thumbs.db
 
-# Sécurité : ne jamais versionner les clés SSL
-/etc/ssl/
+# Cache divers
+*.log
