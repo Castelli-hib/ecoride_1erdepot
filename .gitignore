@@ -1,36 +1,30 @@
 # Symfony / PHP
 /vendor/
 /var/
-/node_modules/
-/public/build/
-/public/bundles/
-/public/uploads/
-
-# Fichiers de configuration locaux
 /.env
 /.env.local
-/.env.*.local
+/.env.test
+/.env.dev
+/.phpunit.result.cache
 
-# Logs et cache
-/log/
-/var/cache/
-/var/log/
-/var/sessions/
-/*.log
+# Node / JS
+/node_modules/
+/public/build/
+/assets/app.js.map
 
-# Docker / MySQL / runtime
+# Docker
 docker-compose.override.yml
-mysql/mysql.sock
-mysql/*.cnf
-mysql/ib*
-mysql/#*
-mysql/*.err
-mysql/*.log
-mysql/binlog.*
-mysql/undo_*
-mysql/performance_schema/
-mysql/sys/
-mysql/ecoride/*.ibd
-# MySQL / BDD locaux
-/mysql/
-/app/.env*
+.env.docker
+mysql_data/
+app/mysql_data/
+postgres_data/
+redis_data/
+
+# IDE & système
+/.idea/
+/.vscode/
+/.DS_Store
+Thumbs.db
+
+# Cache divers
+*.log

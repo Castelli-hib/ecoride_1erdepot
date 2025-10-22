@@ -1,138 +1,128 @@
-// --- Variables de contrôle
-let firstname = false;
-let lastname = false;
-let username = false;
-let email = false;
-let rgpd = false;
-let password = false;
+// assets/js/register.js
 
 document.addEventListener('DOMContentLoaded', () => {
-    const firstnameInput = document.querySelector('#registration_form_firstname');
-    const lastnameInput = document.querySelector('#registration_form_lastname');
-    const usernameInput = document.querySelector('#registration_form_username');
-    const emailInput = document.querySelector('#registration_form_email');
-    const rgpdCheckbox = document.querySelector('#registration_form_agreeTerms');
-    const passwordInput = document.querySelector('#registration_form_plainPassword');
+  // flags
+  let firstname = false;
+  let lastname = false;
+  let username = false;
+  let email = false;
+  let rgpd = false;
+  let password = false;
 
-    if (!firstnameInput || !lastnameInput || !usernameInput || !emailInput || !rgpdCheckbox || !passwordInput) {
-        console.warn('Certains champs du formulaire sont introuvables.');
-        return;
-    }
+  // éléments
+  const firstnameInput = document.querySelector('#registration_form_firstname');
+  const lastnameInput  = document.querySelector('#registration_form_lastname');
+  const usernameInput  = document.querySelector('#registration_form_username');
+  const emailInput     = document.querySelector('#registration_form_email');
+  const rgpdCheckbox   = document.querySelector('#registration_form_agreeTerms');
+  const passwordInput  = document.querySelector('#registration_form_plainPassword');
+  const entropyElement = document.querySelector('#entropy');
+  const barElement     = document.querySelector('#password-bar');
+  const submitBtn      = document.querySelector('#submit-button');
 
-    firstnameInput.addEventListener('input', checkFirstname);
-    lastnameInput.addEventListener('input', checkLastname);
-    usernameInput.addEventListener('input', checkUsername);
-    emailInput.addEventListener('input', checkEmail);
-    rgpdCheckbox.addEventListener('change', checkRgpd);
-    passwordInput.addEventListener('input', checkPassword);
-});
+  // sécurité : logs et return si éléments manquants
+  if (!firstnameInput || !lastnameInput || !usernameInput || !emailInput || !rgpdCheckbox || !passwordInput || !submitBtn) {
+    console.warn('register.js : un ou plusieurs éléments du formulaire sont introuvables :', {
+      firstname: !!firstnameInput,
+      lastname: !!lastnameInput,
+      username: !!usernameInput,
+      email: !!emailInput,
+      rgpd: !!rgpdCheckbox,
+      password: !!passwordInput,
+      button: !!submitBtn
+    });
+    return;
+  }
 
-// --- Fonctions de validation
-function checkFirstname() {
-    firstname = this.value.trim().length >= 2;
-    checkAll();
-}
-function checkLastname() {
-    lastname = this.value.trim().length >= 2;
-    checkAll();
-}
-function checkUsername() {
-    username = this.value.trim().length >= 3;
-    checkAll();
-}
-function checkEmail() {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    email = regex.test(this.value.trim());
-    checkAll();
-}
-function checkRgpd() {
-    rgpd = this.checked;
-    checkAll();
-}
+  // listeners
+  firstnameInput.addEventListener('input', function() { firstname = this.value.trim().length >= 2; checkAll(); });
+  lastnameInput.addEventListener('input',  function() { lastname  = this.value.trim().length >= 2; checkAll(); });
+  usernameInput.addEventListener('input',  function() { username  = this.value.trim().length >= 3; checkAll(); });
+  emailInput.addEventListener('input',     function() { email     = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value.trim()); checkAll(); });
+  rgpdCheckbox.addEventListener('change',  function() { rgpd = this.checked; checkAll(); });
+  passwordInput.addEventListener('input',  function() { checkPassword(this.value); });
 
-// --- Vérifie si tout est bon
-function checkAll() {
-    const button = document.querySelector("#submit-button");
-    if (!button) return;
-
+  function checkAll() {
     if (firstname && lastname && username && email && rgpd && password) {
-        button.removeAttribute("disabled");
+      submitBtn.removeAttribute('disabled');
     } else {
-        button.setAttribute("disabled", "disabled");
+      submitBtn.setAttribute('disabled', 'disabled');
     }
-}
+  }
 
-// --- Force du mot de passe
-const PasswordStrength = {
-    STRENGTH_VERY_WEAK: 'Très faible',
-    STRENGTH_WEAK: 'Faible',
-    STRENGTH_MEDIUM: 'Moyen',
-    STRENGTH_STRONG: 'Fort',
-    STRENGTH_VERY_STRONG: 'Très fort'
-};
+  const PasswordStrength = {
+    VERY_WEAK: 'Très faible',
+    WEAK: 'Faible',
+    MEDIUM: 'Moyen',
+    STRONG: 'Fort',
+    VERY_STRONG: 'Très fort'
+  };
 
-function checkPassword() {
-    const mdp = this.value;
-    const entropyElement = document.querySelector('#entropy');
-    const bar = document.querySelector('#password-bar');
-    if (!entropyElement || !bar) return;
+  function checkPassword(pwd) {
+    if (!entropyElement || !barElement) return;
 
-    const entropy = evaluatePasswordStrength(mdp);
-    entropyElement.classList.remove("text-red", "text-orange", "text-green");
+    const result = evaluatePasswordStrength(pwd);
 
-    let width = 20;
-    let color = "red";
+    // reset classes
+    entropyElement.classList.remove('text-red','text-orange','text-green');
 
-    switch (entropy) {
-        case PasswordStrength.STRENGTH_VERY_WEAK:
-        case PasswordStrength.STRENGTH_WEAK:
-            entropyElement.classList.add("text-red");
+    let width = 10;
+    let color = '#e74c3c'; // red default
+    switch (result) {
+        case PasswordStrength.VERY_WEAK:
+        case PasswordStrength.WEAK:
+            entropyElement.classList.add('text-red');
+            password = false;
             width = 20;
-            color = "red";
+            color = '#e74c3c';
+        break;
+        case PasswordStrength.MEDIUM:
+            entropyElement.classList.add('text-orange');
             password = false;
-            break;
-        case PasswordStrength.STRENGTH_MEDIUM:
-            entropyElement.classList.add("text-orange");
             width = 50;
-            color = "orange";
-            password = false;
-            break;
-        case PasswordStrength.STRENGTH_STRONG:
-            entropyElement.classList.add("text-green");
+            color = '#f39c12';
+        break;
+        case PasswordStrength.STRONG:
+            entropyElement.classList.add('text-green');
+            password = true;
             width = 80;
-            color = "green";
+            color = '#2ecc71';
+        break;
+        case PasswordStrength.VERY_STRONG:
+            entropyElement.classList.add('text-green');
             password = true;
-            break;
-        case PasswordStrength.STRENGTH_VERY_STRONG:
-            entropyElement.classList.add("text-green");
             width = 100;
-            color = "darkgreen";
-            password = true;
-            break;
+            color = '#27ae60';
+        break;
+    default:
+        password = false;
     }
 
-    bar.style.width = width + "%";
-    bar.style.backgroundColor = color;
+    barElement.style.width = width + '%';
+    barElement.style.backgroundColor = color;
+    entropyElement.textContent = result;
 
-    entropyElement.textContent = entropy;
     checkAll();
-}
+  }
 
-function evaluatePasswordStrength(password) {
-    const length = password.length;
-    if (length === 0) return PasswordStrength.STRENGTH_VERY_WEAK;
+  function evaluatePasswordStrength(pwd) {
+    const len = pwd.length;
+    if (len === 0) return PasswordStrength.VERY_WEAK;
 
-    let hasLower = /[a-z]/.test(password);
-    let hasUpper = /[A-Z]/.test(password);
-    let hasDigit = /\d/.test(password);
-    let hasSymbol = /[^a-zA-Z\d]/.test(password);
+    const hasLower = /[a-z]/.test(pwd);
+    const hasUpper = /[A-Z]/.test(pwd);
+    const hasDigit = /\d/.test(pwd);
+    const hasSymbol = /[^a-zA-Z0-9]/.test(pwd);
 
-    let variety = [hasLower, hasUpper, hasDigit, hasSymbol].filter(Boolean).length;
-    let entropy = length * Math.log2(10 * variety);
+    const variety = [hasLower, hasUpper, hasDigit, hasSymbol].filter(Boolean).length;
 
-    if (entropy >= 120) return PasswordStrength.STRENGTH_VERY_STRONG;
-    if (entropy >= 100) return PasswordStrength.STRENGTH_STRONG;
-    if (entropy >= 80) return PasswordStrength.STRENGTH_MEDIUM;
-    if (entropy >= 60) return PasswordStrength.STRENGTH_WEAK;
-    return PasswordStrength.STRENGTH_VERY_WEAK;
-}
+    // Score simple : longueur * variété
+    const score = len * variety;
+
+    if (score >= 60) return PasswordStrength.VERY_STRONG;
+    if (score >= 40) return PasswordStrength.STRONG;
+    if (score >= 25) return PasswordStrength.MEDIUM;
+    if (score >= 12) return PasswordStrength.WEAK;
+    return PasswordStrength.VERY_WEAK;
+  }
+});
