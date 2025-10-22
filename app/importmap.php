@@ -12,26 +12,25 @@
  * The "importmap:require" command can be used to add new entries to this file.
  */
 return [
+    'stimulus' => [
+        'version' => '3.2.2',
+    ],
     'app' => [
-        'path' => './assets/app.js',
-        'entrypoint' => true,
+        'version' => '0.1.0',
     ],
     'register' => [
-        'path' => 'assets/js/register.js',
-        'entrypoint' => true,
+        'version' => '0.0.0',
+    ],
+    'cadence' => [
+        'version' => '3.0.6',
     ],
     '@hotwired/stimulus' => [
         'version' => '3.2.2',
     ],
     '@symfony/stimulus-bundle' => [
-        'path' => 'vendor/symfony/stimulus-bundle/assets/dist/loader.js',
+        'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
     ],
     '@hotwired/turbo' => [
         'version' => '7.3.0',
     ],
-    'importmap' => [
-        'app' => 'assets/app.js',
-        'register' => 'assets/register.js',
-    ], 
-
 ];
