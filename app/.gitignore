@@ -28,3 +28,7 @@ Thumbs.db
 
 # Cache divers
 *.log
+
+###> symfonycasts/sass-bundle ###
+/public/assets/
+###< symfonycasts/sass-bundle ###
