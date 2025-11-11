@@ -28,3 +28,9 @@ Thumbs.db
 
 # Cache divers
 *.log
+
+# mysql
+/mysql
+
+# etc - certificat
+/etc
