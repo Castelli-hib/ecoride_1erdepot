@@ -10,7 +10,6 @@ when@prod:
         asset_mapper:
             missing_import_mode: warn
 
-
-        excluded_patterns:
-            - '*/assets/styles/_*.scss'
-            - '*/assets/styles/**/_*.scss'
+        # excluded_patterns:
+        #     - '*/assets/styles/_*.scss'
+        #     - '*/assets/styles/**/_*.scss'
