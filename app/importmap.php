@@ -18,10 +18,10 @@ return [
     'app' => [
         'version' => '0.1.0',
     ],
-    'register' => [
-        'version' => '0.0.0',
-        'entrypoint' => true,
-    ],
+    // 'register' => [
+    //     'version' => '0.0.0',
+    //     'entrypoint' => true,
+    // ],
     'cadence' => [
         'version' => '0.0.12',
     ],
