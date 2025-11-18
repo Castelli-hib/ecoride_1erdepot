@@ -1,16 +1,17 @@
 # Symfony / PHP
-/vendor/
-/var/
-/.env
-/.env.local
-/.env.test
-/.env.dev
-/.phpunit.result.cache
+/app/vendor/
+/app/var/
+/app/.env
+/app/.env.local
+/app/.env.test
+/app/.env.dev
+/app/.phpunit.result.cache
 
 # Node / JS
-/node_modules/
-/public/build/
-/assets/app.js.map
+/app/node_modules/
+/app/public/build/
+/app/public/bundles/
+/app/assets/app.js.map
 
 # Docker
 docker-compose.override.yml
@@ -28,7 +29,3 @@ Thumbs.db
 
 # Cache divers
 *.log
-
-###> symfonycasts/sass-bundle ###
-/public/assets/
-###< symfonycasts/sass-bundle ###

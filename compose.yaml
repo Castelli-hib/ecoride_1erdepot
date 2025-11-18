@@ -12,19 +12,19 @@ services:
     volumes:
       - ./mysql:/var/lib/mysql
 
-  php:
-    container_name: php
+  app:
+    container_name: app
     build:
-      context: ./php       # Dossier contenant le Dockerfile
-      dockerfile: Dockerfile
+      context: ./app       # Dossier contenant le Dockerfile
+      dockerfile: dockerfile.dev
     ports:
       - 8888:80
       - 8443:443
     volumes:
-      - ./apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
-      - ./apache/default-ssl.conf:/etc/apache2/sites-enabled/000-default-ssl.conf
-      - ./etc/ssl:/etc/ssl
-      - ./app:/var/www      # Ton projet Symfony
+        - ./app/apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
+        - ./app/apache/default-ssl.conf:/etc/apache2/sites-enabled/000-default-ssl.conf
+        - ./app/etc/ssl:/etc/ssl
+        - ./app:/var/www   # Ton projet Symfony
     depends_on:
       - database
 

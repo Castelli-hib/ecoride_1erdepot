@@ -24,15 +24,86 @@ class AppFixtures extends Fixture
         $faker = Factory::create('fr_FR');
 
         // =========================
+        //  Création de 2 admin
+        // =========================
+        for ($i = 1; $i <= 2; $i++) {
+            $email = "admin-1611-" . $i . "@ecoride.fr";
+
+            $admin = (new User())
+                ->setUsername("admin_" . $i)
+                ->setFirstname($faker->firstName)
+                ->setLastname($faker->lastName)
+                ->setEmail($email)
+                ->setPhoneNumber($faker->phoneNumber)
+                ->setCity($faker->city)
+                ->setRoles(['ROLE_USER'])
+                ->setIsVerified(true);
+
+            // 🔒 mot de passe haché
+            $hashedPassword = $this->passwordHasher->hashPassword($admin, 'password-admin-12');
+            $admin->setPassword($hashedPassword);
+
+            $manager->persist($admin);
+        }
+
+        // =========================
+        //  Création de 2 conducteurs
+        // =========================
+        for ($i = 1; $i <= 2; $i++) {
+            $email = "driver-1611-" . $i . "@ecoride.fr";
+
+            $driver = (new User())
+                ->setUsername("driver_" . $i)
+                ->setFirstname($faker->firstName)
+                ->setLastname($faker->lastName)
+                ->setEmail($email)
+                ->setPhoneNumber($faker->phoneNumber)
+                ->setCity($faker->city)
+                ->setRoles(['ROLE_DRIVER'])
+                ->setIsVerified(true);
+
+            // 🔒 mot de passe haché
+            $hashedPassword = $this->passwordHasher->hashPassword($driver, 'password-driver-12');
+            $driver->setPassword($hashedPassword);
+
+            $manager->persist($driver);
+        }
+
+        // =========================
+        //  Création de 2 passagers
+        // =========================
+        for ($i = 1; $i <= 2; $i++) {
+            $email = "passenger-1611-" . $i . "@ecoride.fr";
+
+            $passenger = (new User())
+                ->setUsername("passenger_" . $i)
+                ->setFirstname($faker->firstName)
+                ->setLastname($faker->lastName)
+                ->setEmail($email)
+                ->setPhoneNumber($faker->phoneNumber)
+                ->setCity($faker->city)
+                ->setRoles(['ROLE_PASSENGER'])
+                ->setIsVerified(true);
+
+            // 🔒 mot de passe haché
+            $hashedPassword = $this->passwordHasher->hashPassword($passenger, 'password-passenger-12');
+            $passenger->setPassword($hashedPassword);
+
+            $manager->persist($passenger);
+        }
+
+
+
+        // =========================
         //  Création des utilisateurs
         // =========================
         $users = [];
         for ($i = 1; $i <= 5; $i++) {
             // 💡 Email unique grâce à uniqid()
-            $email = "user{$i}_" . uniqid() . "@ecoride.fr";
+            $email = "user_" . uniqid() . "@ecoride.fr";
 
             $user = new User();
-            $user->setUsername("user$i");
+            $user->setUsername("user_" . $i);
             $user->setFirstname($faker->firstName);
             $user->setLastname($faker->lastName);
             $user->setEmail($email);
