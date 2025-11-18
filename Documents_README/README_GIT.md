@@ -144,3 +144,14 @@ circleci.com (gitLab) liste d'instruction, liste les étapes
 ## git cherry-pick + id +i
 
 récupere le commit
+
+## 📌 Résumé rapide (copie facile)
+
+git checkout feature/deployment
+git add README.md
+git commit -m "Update README"
+git checkout dev
+git pull origin dev
+git merge feature/deployment
+git push origin dev
+

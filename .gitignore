@@ -1,6 +1,6 @@
 # Symfony / PHP
-/vendor/
-/var/
+/app/vendor/
+/app/var/
 /.env
 /.env.local
 /.env.test
@@ -8,9 +8,9 @@
 /.phpunit.result.cache
 
 # Node / JS
-/node_modules/
-/public/build/
-/assets/app.js.map
+/app/node_modules
+/app/public/build/
+/app/assets/app.js.map
 
 # Docker
 docker-compose.override.yml
@@ -34,3 +34,7 @@ Thumbs.db
 
 # etc - certificat
 /etc
+
+# symfony/asset+vendor ###
+/public/assets/
+/assets/vendor/
