@@ -257,3 +257,4 @@ ecoride/
 ![Main Ecoride](Documents_README/images/main_ecoride.jpg?raw=true)
 ![Palette photo](Documents_README/images/palette_photo.jpg?raw=true)
 ![Covoiturage](Documents_README/images/covoiturage.jpg?raw=true)
+![Homepage](https://raw.githubusercontent.com/Castelli-hib/ecoride_1erdepot/main/Documents_README/images/homepage.jpg)
