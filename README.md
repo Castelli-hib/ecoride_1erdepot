@@ -151,13 +151,11 @@ Exemple Repository (QueryBuilder)
 2. Le serveur génère un **jeton JWT signé**
 3. Le client appelle l’API avec :
 
-Authorization: Bearer <token>
+- Authorization: Bearer <token>
 
 Contenu du jeton
 email
-
 rôles
-
 date d’expiration
 
 Référence
@@ -247,19 +245,34 @@ ecoride/
 └── README.md
 
 ---
+## Maquettes
+---
+
+## Les maquettes sont disponibles sur [Figma]
+https://www.figma.com/design/cBeUm9wiFxE9pEoBkRrYgE/Ecoride_Wireframe?node-id=0-1&p=f&t=6eMbCQXzb5Z80TqD-0
 
 ### Aperçu du projet
 
 ![Diagramme Merise](Documents_README/images/diagramme_classe_merise.png?raw=true)
 
 ![Chutier couleur](Documents_README/images/chutier_couleur.jpg?raw=true)
+
 ![Sirat](Documents_README/images/sirat-825x510.jpg?raw=true)
+
 ![Homepage](Documents_README/images/homepage.jpg?raw=true)
+
 ![Covoiturages](Documents_README/images/covoiturages.jpg?raw=true)
+
 ![Connexion](Documents_README/images/connexion.jpg?raw=true)
+
 ![Connexion2x](Documents_README/images/connexion2x.png?raw=true)
+
 ![iPhone SE3 Homepage](Documents_README/images/iphonese3_homepage.jpg?raw=true)
+
 ![Main Ecoride](Documents_README/images/main_ecoride.jpg?raw=true)
+
 ![Palette photo](Documents_README/images/palette_photo.jpg?raw=true)
+
 ![Covoiturage](Documents_README/images/covoiturage.jpg?raw=true)
+
 ![Homepage](https://raw.githubusercontent.com/Castelli-hib/ecoride_1erdepot/main/Documents_README/images/homepage.jpg)
