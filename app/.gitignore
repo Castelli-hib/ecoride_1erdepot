@@ -5,6 +5,7 @@
 .env.local
 .env.test
 .env.dev
+.env.prod
 /.phpunit.result.cache
 
 # Node / JS
