@@ -249,7 +249,7 @@ ecoride/
 ---
 
 ## Les maquettes sont disponibles sur [Figma]
-https://www.figma.com/design/cBeUm9wiFxE9pEoBkRrYgE/Ecoride_Wireframe?node-id=0-1&p=f&t=6eMbCQXzb5Z80TqD-0
+[Figma](https://www.figma.com/design/cBeUm9wiFxE9pEoBkRrYgE/Ecoride_Wireframe?node-id=0-1&p=f&t=6eMbCQXzb5Z80TqD-0)
 
 ### Aperçu du projet
 
